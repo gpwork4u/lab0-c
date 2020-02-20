@@ -129,7 +129,18 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
     /* TODO: You need to fix up this code. */
     /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || !q->head)
+        return false;
+    queue_t *q_tmp = malloc(sizeof(queue_t));
+    q_tmp->head = q->head;
+    if (sp) {
+        snprintf(sp, bufsize, "%s", q_tmp->head->value);
+    }
     q->head = q->head->next;
+    free(q_tmp->head->value);
+    free(q_tmp->head);
+    free(q_tmp);
+    q->size--;
     return true;
 }
 
