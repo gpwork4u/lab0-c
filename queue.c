@@ -35,8 +35,10 @@ void q_free(queue_t *q)
         if (q->head->next) {
             q_tmp->head = q->head;
             q->head = q->head->next;
+            free(q_tmp->head->value);
             free(q_tmp->head);
         } else {
+            free(q->head->value);
             free(q->head);
             break;
         }
@@ -102,15 +104,14 @@ bool q_insert_tail(queue_t *q, char *s)
         free(newh);
         return false;
     }
-
     snprintf(newh->value, strlen(s) + 1, "%s", s);
     newh->next = NULL;
+    q->size++;
     if (!q->tail) {
         q->head = newh;
         q->tail = newh;
         return true;
     }
-
     q->tail->next = newh;
     q->tail = newh;
     return true;
