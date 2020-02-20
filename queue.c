@@ -30,13 +30,13 @@ void q_free(queue_t *q)
         return;
     }
 
-    queue_t *q_tmp = malloc(sizeof(queue_t));
+    list_ele_t **tmp = malloc(sizeof(list_ele_t *));
     while (q->head) {
         if (q->head->next) {
-            q_tmp->head = q->head;
+            *tmp = q->head;
             q->head = q->head->next;
-            free(q_tmp->head->value);
-            free(q_tmp->head);
+            free((*tmp)->value);
+            free(*tmp);
         } else {
             free(q->head->value);
             free(q->head);
@@ -44,7 +44,7 @@ void q_free(queue_t *q)
         }
     }
 
-    free(q_tmp);
+    free(tmp);
     free(q);
 }
 
