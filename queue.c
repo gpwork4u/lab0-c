@@ -16,6 +16,7 @@ queue_t *q_new()
     if (!q)
         return NULL;
     q->head = NULL;
+    q->tail = NULL;
     q->size = 0;
     return q;
 }
@@ -28,6 +29,7 @@ void q_free(queue_t *q)
     if (!q) {
         return;
     }
+
     queue_t *q_tmp = malloc(sizeof(queue_t));
     while (q->head) {
         if (q->head->next) {
