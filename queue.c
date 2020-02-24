@@ -160,13 +160,6 @@ void q_reverse(queue_t *q)
         return;
     if (q->size <= 1)
         return;
-    if (q->size == 2) {
-        q->head = NULL;
-        q->tail->next = q->head;
-        q->head = q->tail;
-        q->tail = q->head->next;
-        return;
-    }
     q->tail->next = q->head;
     while (q->head->next != q->tail) {
         q->tmp = q->head->next;
