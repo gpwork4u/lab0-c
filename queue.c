@@ -17,7 +17,6 @@ queue_t *q_new()
         return NULL;
     q->head = NULL;
     q->tail = NULL;
-    q->tmp = NULL;
     q->size = 0;
     return q;
 }
@@ -32,10 +31,10 @@ void q_free(queue_t *q)
     }
 
     while (q->head) {
-        q->tmp = q->head;
+        list_ele_t *tmp = q->head;
         q->head = q->head->next;
-        free(q->tmp->value);
-        free(q->tmp);
+        free(tmp->value);
+        free(tmp);
     }
     free(q);
 }
@@ -123,13 +122,14 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
     /* TODO: Remove the above comment when you are about to implement. */
     if (!q || !q->head)
         return false;
-    q->tmp = q->head;
+    list_ele_t *tmp;
+    tmp = q->head;
     if (sp) {
-        snprintf(sp, bufsize, "%s", q->tmp->value);
+        snprintf(sp, bufsize, "%s", tmp->value);
     }
     q->head = q->head->next;
-    free(q->tmp->value);
-    free(q->tmp);
+    free(tmp->value);
+    free(tmp);
     q->size--;
     return true;
 }
@@ -161,11 +161,12 @@ void q_reverse(queue_t *q)
     if (q->size <= 1)
         return;
     q->tail->next = q->head;
+    list_ele_t *tmp;
     while (q->head->next != q->tail) {
-        q->tmp = q->head->next;
-        q->head->next = q->tmp->next;
-        q->tmp->next = q->tail->next;
-        q->tail->next = q->tmp;
+        tmp = q->head->next;
+        q->head->next = tmp->next;
+        tmp->next = q->tail->next;
+        q->tail->next = tmp;
     }
     q->tail = q->head;
     q->head = q->head->next;
