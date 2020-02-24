@@ -17,6 +17,7 @@ queue_t *q_new()
         return NULL;
     q->head = NULL;
     q->tail = NULL;
+    q->tmp = NULL;
     q->size = 0;
     return q;
 }
@@ -30,19 +31,15 @@ void q_free(queue_t *q)
         return;
     }
 
-    while (q->head) {
-        if (q->head->next) {
-            q->tmp = q->head;
-            q->head = q->head->next;
-            free(q->tmp->value);
-            free(q->tmp);
-        } else {
-            free(q->head->value);
-            free(q->head);
-            break;
-        }
+    while (q->head->next) {
+        q->tmp = q->head;
+        q->head = q->head->next;
+        free(q->tmp->value);
+        free(q->tmp);
     }
 
+    free(q->head->value);
+    free(q->head);
     free(q);
 }
 
@@ -164,6 +161,20 @@ void q_reverse(queue_t *q)
     /* TODO: Remove the above comment when you are about to implement. */
     if (!q || !q->head)
         return;
+    q->tail = q->head->next;
+    q->tmp = q->head;
+    q->tmp->next = NULL;
+    q->head = q->tail;
+    while (q->head->next) {
+        q->tail = q->head->next;
+        q->head->next = q->tmp;
+        q->tmp = q->head;
+        q->head = q->tail;
+    }
+    q->head->next = q->tmp;
+    while (q->tail) {
+        q->tail = q->tail->next;
+    }
 }
 /*
  * Sort elements of queue in ascending order
