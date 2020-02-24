@@ -167,20 +167,16 @@ void q_reverse(queue_t *q)
         q->tail = q->head->next;
         return;
     }
-    q->tail = q->head->next;
-    q->tmp = q->head;
-    q->tmp->next = NULL;
-    q->head = q->tail;
-    while (q->head) {
-        q->tail = q->head->next;
-        q->head->next = q->tmp;
-        q->tmp = q->head;
-        q->head = q->tail;
+    q->tail->next = q->head;
+    while (q->head->next != q->tail) {
+        q->tmp = q->head->next;
+        q->head->next = q->tmp->next;
+        q->tmp->next = q->tail->next;
+        q->tail->next = q->tmp;
     }
-    q->head = q->tmp;
     q->tail = q->head;
-    while (q->tail->next)
-        q->tail = q->tail->next;
+    q->head = q->head->next;
+    q->tail->next = NULL;
 }
 /*
  * Sort elements of queue in ascending order
