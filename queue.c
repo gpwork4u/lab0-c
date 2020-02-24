@@ -156,22 +156,31 @@ void q_reverse(queue_t *q)
 {
     /* TODO: You need to write the code for this function */
     /* TODO: Remove the above comment when you are about to implement. */
-    if (!q || !q->head)
+    if (!q)
         return;
+    if (q->size <= 1)
+        return;
+    if (q->size == 2) {
+        q->head = NULL;
+        q->tail->next = q->head;
+        q->head = q->tail;
+        q->tail = q->head->next;
+        return;
+    }
     q->tail = q->head->next;
     q->tmp = q->head;
     q->tmp->next = NULL;
     q->head = q->tail;
-    while (q->head->next) {
+    while (q->head) {
         q->tail = q->head->next;
         q->head->next = q->tmp;
         q->tmp = q->head;
         q->head = q->tail;
     }
-    q->head->next = q->tmp;
-    while (q->tail) {
+    q->head = q->tmp;
+    q->tail = q->head;
+    while (q->tail->next)
         q->tail = q->tail->next;
-    }
 }
 /*
  * Sort elements of queue in ascending order
