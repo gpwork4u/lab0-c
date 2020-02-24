@@ -31,15 +31,12 @@ void q_free(queue_t *q)
         return;
     }
 
-    while (q->head->next) {
+    while (q->head) {
         q->tmp = q->head;
         q->head = q->head->next;
         free(q->tmp->value);
         free(q->tmp);
     }
-
-    free(q->head->value);
-    free(q->head);
     free(q);
 }
 
