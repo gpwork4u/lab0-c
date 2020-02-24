@@ -30,13 +30,12 @@ void q_free(queue_t *q)
         return;
     }
 
-    list_ele_t **tmp = malloc(sizeof(list_ele_t *));
     while (q->head) {
         if (q->head->next) {
-            *tmp = q->head;
+            q->tmp = q->head;
             q->head = q->head->next;
-            free((*tmp)->value);
-            free(*tmp);
+            free(q->tmp->value);
+            free(q->tmp);
         } else {
             free(q->head->value);
             free(q->head);
@@ -44,7 +43,6 @@ void q_free(queue_t *q)
         }
     }
 
-    free(tmp);
     free(q);
 }
 
@@ -131,15 +129,13 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
     /* TODO: Remove the above comment when you are about to implement. */
     if (!q || !q->head)
         return false;
-    list_ele_t **tmp = malloc(sizeof(list_ele_t *));
-    *tmp = q->head;
+    q->tmp = q->head;
     if (sp) {
-        snprintf(sp, bufsize, "%s", (*tmp)->value);
+        snprintf(sp, bufsize, "%s", q->tmp->value);
     }
     q->head = q->head->next;
-    free((*tmp)->value);
-    free(*tmp);
-    free(tmp);
+    free(q->tmp->value);
+    free(q->tmp);
     q->size--;
     return true;
 }
@@ -166,8 +162,9 @@ void q_reverse(queue_t *q)
 {
     /* TODO: You need to write the code for this function */
     /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || !q->head)
+        return;
 }
-
 /*
  * Sort elements of queue in ascending order
  * No effect if q is NULL or empty. In addition, if q has only one
