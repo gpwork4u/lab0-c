@@ -4,7 +4,7 @@
 
 #include "harness.h"
 #include "queue.h"
-
+#include "sort.h"
 /*
  * Create empty queue.
  * Return NULL if could not allocate space.
@@ -26,10 +26,8 @@ void q_free(queue_t *q)
 {
     /* TODO: How about freeing the list elements and the strings? */
     /* Free queue structure */
-    if (!q) {
+    if (!q)
         return;
-    }
-
     while (q->head) {
         list_ele_t *tmp = q->head;
         q->head = q->head->next;
@@ -181,4 +179,11 @@ void q_sort(queue_t *q)
 {
     /* TODO: You need to write the code for this function */
     /* TODO: Remove the above comment when you are about to implement. */
+    if (!q)
+        return;
+    if (q->size <= 1)
+        return;
+    merge_sort(&(q->head));
+    while (q->tail->next)
+        q->tail = q->tail->next;
 }
