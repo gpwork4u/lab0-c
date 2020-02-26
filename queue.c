@@ -56,7 +56,7 @@ bool q_insert_head(queue_t *q, char *s)
         return false;
     /* Don't forget to allocate space for the string and copy it */
     /* What if either call to malloc returns NULL? */
-    newh->value = malloc(sizeof(s));
+    newh->value = malloc(sizeof(char) * (strlen(s) + 1));
     if (!newh->value) {
         free(newh);
         return false;
@@ -88,7 +88,7 @@ bool q_insert_tail(queue_t *q, char *s)
     newh = malloc(sizeof(list_ele_t));
     if (!newh)
         return false;
-    newh->value = malloc(sizeof(s));
+    newh->value = malloc(sizeof(char) * (strlen(s) + 1));
     if (!newh->value) {
         free(newh);
         return false;
